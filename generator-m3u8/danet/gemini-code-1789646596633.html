@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <script>
+        const apiUrl = 'https://danet.vn/api/movies/1558376704/episodes/1558376726/locations';
+        async function fetchAndRedirect() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`Lỗi kết nối API: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const streamUrl = data?.streams?.[0]?.file_location;
+
+                if (streamUrl) {
+                    window.location.href = streamUrl;
+                } else {
+                    document.getElementById('status').innerText = '404';
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('status').innerText = 'error code: ' + error.message;
+            }
+        }
+        fetchAndRedirect();
+    </script>
+</body>
+</html>
